@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using SportsStore.Domain.Entities;
 using SportsStore.Domain.Abstract;
+
 namespace SportsStore.WebUI.Controllers
 {
     public class ProductController : Controller
