@@ -12,14 +12,18 @@ namespace SportsStore.WebUI.Controllers
     {
         private IProductsRepository repository;
 
+        public int PageSize = 4;
+
         public ProductController(IProductsRepository productRepository)
         {
             this.repository = productRepository;
         }
         // GET: Product
-        public ViewResult List()
+        public ViewResult List(int page =1)
         {
-            return View(repository.Products);
+            //skip的意思跳过前面多少条数据，take只显示多少条数据
+            return View(repository.Products.OrderBy(p=>p.ProductID).Skip((page-1)*PageSize).Take(PageSize));
+            
         }
     }
 }
