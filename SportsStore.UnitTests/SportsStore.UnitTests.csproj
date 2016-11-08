@@ -49,6 +49,10 @@
       <HintPath>..\..\ASP.MVC5-Study\Wiizard-Mvc5\packages\Ninject.MVC3.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\..\..\SourceCode\.NETExcrise\ASP.NETmvc1200Examples\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Mvc">
       <HintPath>..\..\ASP.MVC5-Study\Wiizard-Mvc5\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
