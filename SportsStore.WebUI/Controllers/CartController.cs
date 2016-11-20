@@ -12,48 +12,64 @@ namespace SportsStore.WebUI.Controllers
     public class CartController : Controller
     {
         private IProductsRepository repository;
+        private IOrderProcessor orderProcessor;
 
-        public CartController(IProductsRepository repo)
+        public CartController(IProductsRepository repo, IOrderProcessor proc)
         {
             repository = repo;
+            orderProcessor = proc;
         }
-        public ViewResult Index(string returnUrl)
+        public ViewResult Index(Cart cart, string returnUrl)
         {
             return View(new CartIndexViewModel
             {
-                Cart = GetCart(),
+                Cart = cart,
                 ReturnUrl = returnUrl
             });
         }
-        public RedirectToRouteResult AddToCart(int productId, string returnUrl)
+        public RedirectToRouteResult AddToCart(Cart cart, int productId, string returnUrl)
         {
             Product product = repository.Products.FirstOrDefault(p => p.ProductID == productId);
             if (product != null)
             {
-                GetCart().AddItem(product, 1);
+                cart.AddItem(product, 1);
             }
-            return RedirectToAction("Index", new { returnUrl });
+            return RedirectToRoute(new { returnUrl });//假动态添加
         }
 
-        public RedirectToRouteResult RemoveFormCart(int productId, string returnUrl)
+        public RedirectToRouteResult RemoveFormCart(Cart cart, int productId, string returnUrl)
         {
             Product product = repository.Products.FirstOrDefault(p => p.ProductID == productId);
             if (product != null)
             {
-                GetCart().RemoveLine(product);
+                cart.RemoveLine(product);
             }
             return RedirectToAction("Index", new { returnUrl });
         }
 
-        private Cart GetCart()
+        [HttpPost]
+        public ViewResult Checkout(Cart cart, ShippingDetails shippingDetails)
         {
-            Cart cart = (Cart)Session["Cart"];
-            if (cart == null)
+            if (cart.Lines.Count() == 0)
+                ModelState.AddModelError("", "Sorry , your acart is empty");
+            if (ModelState.IsValid)
             {
-                cart = new Cart();
-                Session["Cart"] = cart;
+                orderProcessor.ProcessOrder(cart, shippingDetails);
+                return View("Completed");
             }
-            return cart;
+            else
+            {
+                return View(shippingDetails);
+            }
+        }
+        public ViewResult Checkout()
+        {
+            return View(new ShippingDetails());
+        }
+
+        public PartialViewResult Summary(Cart cart)
+        {
+            return PartialView(cart);
         }
     }
 }
