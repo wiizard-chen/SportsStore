@@ -15,7 +15,7 @@ using SportsStore.WebUI.HtmlHelpers;
 namespace SportsStore.UnitTests
 {
     [TestClass]
-    public class UnitTest1
+    public class Display
     {
         [TestMethod]
         public void Can_Paginate()

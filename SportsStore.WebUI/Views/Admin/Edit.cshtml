@@ -1,0 +1,20 @@
+﻿@model SportsStore.Domain.Entities.Product
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3>@Model.Name</h3>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m=>m.ProductID)
+        @foreach (var property in ViewData.ModelMetadata.Properties)
+        {
+
+        }
+    }
+</div>
