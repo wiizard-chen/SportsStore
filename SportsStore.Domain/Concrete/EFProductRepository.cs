@@ -17,6 +17,7 @@ namespace SportsStore.Domain.Concrete
             }
         }
 
+
         public void SaveProduct(Product product)
         {
             if(product.ProductID ==0)
@@ -35,6 +36,18 @@ namespace SportsStore.Domain.Concrete
                 }
             }
             context.SaveChanges();
+        }
+
+
+        public Product DeleteProduct(int productID)
+        {
+            Product dbEntry = context.Products.Find(productID);
+            if(dbEntry!=null)
+            {
+                context.Products.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
         }
     }
 }

@@ -1,15 +1,17 @@
 ﻿@model SportsStore.Domain.Entities.Product
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Admin : Edit " + Model.Name;
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    //HtmlHelper.ClientValidationEnabled = false;
+    //HtmlHelper.UnobtrusiveJavaScriptEnabled = false;这两句是禁止实时认证的
 }
 
 <div class="panel">
     <div class="panel-heading">
         <h3>@Model.Name</h3>
     </div>
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Edit","Admin"))
     {
         <div class="panel-body">
 
@@ -22,12 +24,13 @@
                         <label>@(property.DisplayName ?? property.PropertyName)</label>
                         @if (property.PropertyName == "Description")
                         {
-                            @Html.TextArea(property.PropertyName, null, new { @class = "form-control", row = 5 })
+                            @Html.TextArea(property.PropertyName, null, new { @class = "form-control", rows = 5 })
                         }
                         else
                         {
                             @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
                         }
+                        @Html.ValidationMessage(property.PropertyName)
                     </div>
                 }
             }
