@@ -25,5 +25,12 @@ namespace SportsStore.Domain.Entities
         [Required(ErrorMessage ="Please enter a number")]
         [Range(0.01,double.MaxValue,ErrorMessage ="Please enter a positive price")]
         public Decimal Price { get; set; }
+
+
+        public byte[] ImageData { get; set; }
+
+        public string ImageMimeType { get; set; }
+
+
     }
 }

@@ -10,10 +10,11 @@ namespace SportsStore.WebUI.Infrastructure.Concrete
     {
         public bool Authenticate(string username, string password)
         {
-            bool result = Membership.ValidateUser(username, password);
-            if (result)
+            bool result = false;
+            if (username == "admin" && password == "secret")
             {
                 FormsAuthentication.SetAuthCookie(username, false);
+                result = true;
             }
             return result;
         }

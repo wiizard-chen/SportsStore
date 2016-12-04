@@ -57,7 +57,7 @@ namespace SportsStore.UnitTests
             Product p2 = target.Edit(2).ViewData.Model as Product;
             Product p3 = target.Edit(3).ViewData.Model as Product;
 
-            Assert.AreEqual(1,p1.ProductID);
+            Assert.AreEqual(1, p1.ProductID);
             Assert.AreEqual(2, p2.ProductID);
             Assert.AreEqual(3, p3.ProductID);
 
@@ -125,6 +125,52 @@ namespace SportsStore.UnitTests
             target.Delete(prod.ProductID);
 
             mock.Verify(m => m.DeleteProduct(prod.ProductID));
+        }
+
+        [TestMethod]
+        public void Can_Retrieve_Image_Data()
+        {
+            Product prod = new Product
+            {
+                ProductID = 2,
+                Name = "Test",
+                ImageData = new byte[] { },
+                ImageMimeType = "image/png"
+            };
+
+            Mock<IProductsRepository> mock = new Mock<IProductsRepository>();
+            mock.Setup(m => m.Products).Returns(new Product[]
+            {
+                new Product {ProductID=1,Name="p1" },
+                prod,
+                new Product {ProductID=3,Name="p3" }
+            }.AsQueryable());
+
+            ProductController target = new ProductController(mock.Object);
+
+            ActionResult result = target.GetImage(2);
+
+            Assert.IsNull(result);
+            Assert.IsInstanceOfType(result, typeof(FileResult));
+            Assert.AreEqual(prod.ImageMimeType, ((FileResult)result).ContentType);
+
+        }
+
+        [TestMethod]
+        public void Cannot_Retrieve_Image_Data()
+        {
+            Mock<IProductsRepository> mock = new Mock<IProductsRepository>();
+            mock.Setup(m => m.Products).Returns(new Product[]
+            {
+                new Product {ProductID=1,Name="p1" },
+                new Product {ProductID=2,Name="p2" }
+            }.AsQueryable());
+
+            ProductController target = new ProductController(mock.Object);
+
+            ActionResult result = target.GetImage(100);
+
+            Assert.IsNull(result);
         }
     }
 }
